@@ -68,3 +68,32 @@ def miller_rabin(n,k):
             return False
 
     return True
+
+
+def jacobi(a, n):
+    """Computes the Jacobi Symbol (a/n), except that -1 is returned as n-1."""
+
+
+def solovay_strassen(n, k):
+    """Probabilistic primality test as described in Wikipedia.
+
+    Refs
+    ----
+        https://en.wikipedia.org/wiki/Solovay%E2%80%93Strassen_primality_test
+    """
+    # Easy cases
+    if n == 1:
+        return False
+    if n == 2:
+        return True
+    if (n % 2) == 0:
+        return False
+
+    # Perform the test k times
+    for __ in range(k):
+        a = random.randint(2, n-1)
+        x = jacobi(a, n)
+
+        if x == 0 or fast_exp(a, (n-1)//2, n) != x:
+            return False
+    return True
