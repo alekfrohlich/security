@@ -1,7 +1,7 @@
-""""""
+"""Pseudo-Random Number Generators."""
 
 class LCG:
-    def __init__(self,seed,a,b,n):
+    def __init__(self, seed, a, b, n):
         self._state = seed
         self._a = a
         self._b = b
@@ -15,7 +15,16 @@ class LCG:
                 done = True
         return self._state
 
-class LFSR:
-    def __init__(self,):
-        pass
 
+class BBS:
+    def __init__(self, seed, n):
+        self._state = seed
+        self._n = n
+
+    def next(self, bits):
+        done = False
+        while not done:
+            self._state = (self._state * self._state) % self._n
+            if self._state >= 2**bits:
+                done = True
+        return self._state
