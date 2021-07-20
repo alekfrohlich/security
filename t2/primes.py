@@ -1,4 +1,4 @@
-""""""
+"""Prime tests."""
 import random
 
 
