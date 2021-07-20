@@ -1,5 +1,6 @@
 import math
 import time
+from Crypto.Util import number
 import itertools
 
 from primes import miller_rabin, fermat
@@ -79,9 +80,9 @@ if __name__=='__main__':
     #     # print("The primes were: {}".format(primes))
 
     # PARAMS_BBS = {
-    #     40:   (2**40  +1, 1896629277721*1969705232213),
-    #     56:   (2**56  +1, 133068068321920793*80237438537015401),
-    #     80:   (2**80  +1, 1689014533500523388971193*2173443203760580518964409),
+    #     40:   (2**40  +1, 557591*1999651),
+    #     56:   (2**56  +1, 226770751*487153111),
+    #     80:   (2**80  +1, 73113891254340439*91670373153188623),
     #     128:  (2**128 +1, 340282366920938463463374659835025145401*509126080944614503374156838505530497337),
     #     168:  (2**168 +1, 691463123470990757152655659793423689541448921377849*680514537863828357127424684016649260214154203943993),
     #     224:  (2**224 +1, 35608696065441588290938341126366558678974373585661280879692741587001*30080160041925342447545961041311446404884154381681348631054489137209),
@@ -100,16 +101,32 @@ if __name__=='__main__':
     #     print("Found {} pseudo-random numbers of {} bits with an average generation time of {} seconds per number.".format(num, bits, avg))
     #     # print("The numbers were: {}".format(prnumbers))
 
-    bits = 40
-    num = 100
-    lcg = LCG(*PARAMS_LCG[bits])
-    primes, avg = gen_primes(bits, num, miller_rabin, lcg)
-    print("Found {} primes of {} bits with an average generation time of {} seconds per prime.".format(num, bits, avg))
-    print("The primes were: {}".format(primes))
+    # bits = 56
+    # num = 1000
+    # lcg = LCG(*PARAMS_LCG[bits])
+    # primes, avg = gen_primes(bits, num, miller_rabin, lcg)
+    # print("Found {} primes of {} bits with an average generation time of {} seconds per prime.".format(num, bits, avg))
+    ps = []
+    qs = []
+    bits = 56
+    l = bits//2
+    for _ in range(100):
+        ps.append(number.getPrime(l))
+        qs.append(number.getPrime(l+1))
+    good_ps = []
+    good_qs = []
+    for p in ps:
+        if (p % 4) == 3:
+            good_ps.append(p)
+    for q in qs:
+        if (q % 4) == 3:
+            good_qs.append(q)
 
-    # print("Input p,q")
-    # p = int(input())
-    # q = int(input())
-    # print("p % 4 = {}".format(p % 4))
-    # print("q % 4 = {}".format(q % 4))
-    # print("gcd((p-3)/2,(q-3)/2) = {}".format( math.gcd((p-3)//2, (q-3)//2) ))
+    for (p,q) in itertools.product(good_ps, good_qs):
+        g = math.gcd((p-3)//2, (q-3)//2)
+        if g == 2 and math.log(p*q,2) > bits+0.5:
+            print((p,q))
+            print(g)
+            print(math.log(p*q,2))
+            # break
+        # 73113891254340439 91670373153188623
