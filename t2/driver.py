@@ -118,7 +118,7 @@ if __name__=='__main__':
             lcg = LCG(*PARAMS_LCG[bits])
             prnumbers, avg = gen_prnumbers(bits, num, lcg)
             print("Found {} pseudo-random numbers of {} bits with an average generation time of {} seconds per number.".format(num, bits, avg))
-            # print("The numbers were: {}".format(prnumbers))
+            print("The numbers were: {}".format(prnumbers))
 
     def gen_primes_LCG_MR():
         print("Generating prime numbers using LCG and MR...")
@@ -129,7 +129,7 @@ if __name__=='__main__':
             lcg = LCG(*PARAMS_LCG[bits])
             primes, avg = gen_primes(bits, num, miller_rabin, lcg)
             print("Found {} primes of {} bits with an average generation time of {} seconds per prime.".format(num, bits, avg))
-            # print("The primes were: {}".format(primes))
+            print("The primes were: {}".format(primes))
 
     def gen_prnumbers_BBS():
         print("Generating pseudo-random numbers using BBS...")
@@ -143,14 +143,14 @@ if __name__=='__main__':
 
     def gen_primes_BBS_Fermat():
         print("Generating prime numbers using BBS and Fermat...")
-        # for i in range(len(MAGS)):
-        bits = MAGS[len(MAGS)-1]
-        num = 1
-        print("Searching for {} {} bit primes...".format(num, bits))
-        bbs = BBS(*PARAMS_BBS[bits])
-        primes, avg = gen_primes(bits, num, fermat, bbs)
-        print("Found {} primes of {} bits with an average generation time of {} seconds per prime.".format(num, bits, avg))
-        # print("The primes were: {}".format(primes))
+        for i in range(len(MAGS)):
+            bits = MAGS[i]
+            num = NUMS[i]
+            print("Searching for {} {} bit primes...".format(num, bits))
+            bbs = BBS(*PARAMS_BBS[bits])
+            primes, avg = gen_primes(bits, num, fermat, bbs)
+            print("Found {} primes of {} bits with an average generation time of {} seconds per prime.".format(num, bits, avg))
+            print("The primes were: {}".format(primes))
 
     # Uncomment the one you wish to run
     # gen_BBS_Params()
